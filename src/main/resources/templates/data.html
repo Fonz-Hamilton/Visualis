@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Commander Data to the bridge -->
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/datastyles.css}" />
+
+
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/script.js}" defer></script>
+    <script type="text/javascript" th:inline="javascript">/*<![CDATA[*/
+
+            // Inject CSV headers into JavaScript variable
+            var csvHeaders = /*[[${csvHeaders}]]*/ [];
+
+            // Inject CSV data into JavaScript variable
+            let csvData = [[${csvData}]];
+
+            console.log("csvData length: " + csvData.length);
+            console.log("inside thymeleaf script. csvData: " + JSON.stringify(csvData));
+            console.log("csvData:", csvData);
+
+
+    /*]]>*/</script>
+
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+
+    <title>Visualis - Visualizer</title>
+</head>
+
+<body>
+<header>
+    <div class="logo-container">
+        <a th:href="@{/home}">
+            <img th:src="@{/images/logo.png}" alt="Visualis"/>
+        </a>
+
+    </div>
+    <nav class="nav1">
+        <ul>
+            <li><a th:href="@{/home}">Home</a></li>
+            <li><a class="active" th:href="@{/visualize}">Visualize</a></li>
+            <li><a th:href="@{/about}">About</a></li>
+            <li style="margin-left:auto">
+                <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                    <!-- User is authenticated -->
+                    <a class="lastnav" href="/logout">Logout</a>
+                </th:block>
+                <th:block th:unless="${#authorization.expression('isAuthenticated()')}">
+                    <!-- User is not authenticated -->
+                    <a class="lastnav" th:href="@{/login}">Login</a>
+                </th:block>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="data-main-container">
+    <div>
+        <div class="top">
+            <div class="side">
+                <div class="upload">
+                    <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
+                        <!-- TODO: hide browse button and make my own -->
+                        <label for="file">Choose a file to upload:</label>
+                        <br>
+                        <input type="file" name="file" id="file" accept=".csv"> <!--TODO: add JSON and whatever -->
+                        <br>
+                        <br>
+                        <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
+                        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+                        <input type="text" name="description" placeholder="File Description">
+                        <button type="submit">Upload File</button>
+                    </form>
+
+                </div>
+                <div class="option">
+
+                    <form action="#" th:action="@{/fetchFileLocation}" th:method="post">
+                        <label for="filechoose">Choose a file to Visualize:</label>
+                        <select name="name" id="filechoose">
+                            <option value="" disabled selected>Select a Name</option>
+                            <!-- Use Thymeleaf to loop through the list of names -->
+                            <option th:each="name : ${nameList}" th:value="${name}" th:text="${name}"></option>
+                        </select>
+
+                        <!-- Hidden input to store the file location -->
+                        <input type="hidden" name="fileLocation" id="fileLocation" th:value="${fileLocation}" />
+
+                        <button id="subbybubby" type="submit">Submit</button>
+                    </form>
+
+
+                </div>
+                <div class="option">
+                    <label for="xAxis">Choose X-Axis:</label>
+                    <select id="xAxis" name="xAxis">
+                        <option value="" disabled selected>Select X-Axis</option>
+                        <!-- loop through the list of headers -->
+                        <option th:each="header : ${csvHeaders}" th:value="${header}" th:text="${header}"></option>
+                    </select>
+                </div>
+
+                <div class="option">
+                    <label for="yAxis">Choose Y-Axis:</label>
+                    <select id="yAxis" name="yAxis">
+                        <option value="" disabled selected>Select Y-Axis</option>
+                        <!-- loop through the list of headers -->
+                        <option th:each="header : ${csvHeaders}" th:value="${header}" th:text="${header}"></option>
+                    </select>
+                </div>
+                <div class="option">
+
+
+                    <label for="chartType">Choose a chart:</label>
+                    <select id="chartType">
+                        <option value="bar">Bar Chart</option>
+                        <option value="line">Line Graph</option>
+                        <option value="pie" disabled >Pie Chart *Coming Soon</option>
+                    </select>
+
+                    <!-- Button to trigger visualization -->
+                    <button onclick="visualize()">Visualize</button>
+
+
+                </div>
+
+
+            </div>
+            <div class="table-container">
+                <div class="table">
+
+                    <table id="table">
+                        <thead>
+                        <tr>
+                            <!-- Define column headers  -->
+                            <th th:each="header : ${csvHeaders}" th:text="${header}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- iterate over rows and columns to display data -->
+                        <tr th:each="row : ${csvData}">
+                            <td th:each="cell : ${row.values()}" th:text="${cell}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <!--
+                <button onclick="addRow()">Add Row</button>
+                <button onclick="addColumn()">Add Column</button>
+                -->
+            </div>
+        </div>
+        <div class="middle">
+
+
+            </div>
+            <div class="graph-container">
+                <div id="chartContainer" class="graph">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script>
+
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("yourFormId"); // Replace with your actual form ID
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            const xAxis = document.getElementById("xAxis").value;
+            const yAxis = document.getElementById("yAxis").value;
+
+            // You can now use the xAxis and yAxis values for chart generation
+            console.log("Selected X-Axis:", xAxis);
+            console.log("Selected Y-Axis:", yAxis);
+
+            // Add logic to generate the chart using the selected headers
+        });
+    });
+</script>
+<!--
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("inside the event listener in html: " + csvData);
+        createBarChart(csvData);
+    });
+</script>
+-->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get references to HTML elements
+        const table = document.getElementById("table");
+        const submitButton = document.getElementById("subbybubby");
+
+        // Add a click event listener to the submit button
+        submitButton.addEventListener("click", function () {
+            // Clear the table by setting its innerHTML to an empty string
+            table.innerHTML = "";
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get the table element
+        const table = document.getElementById("table");
+
+        // Get the header row
+        const headerRow = table.getElementsByTagName("thead")[0].rows[0];
+
+        // Get the dropdown select element
+        const dropdown = document.getElementById("dropdown3");
+
+        // Populate the dropdown options from the table header
+        for (let i = 0; i < headerRow.cells.length; i++) {
+            const cell = headerRow.cells[i];
+            const option = document.createElement("option");
+            option.value = i; // Identify which column was selected
+            option.textContent = cell.textContent;
+            dropdown.appendChild(option);
+        }
+
+        // Add an event listener to respond to the selection
+        dropdown.addEventListener("change", function () {
+            const selectedColumn = this.value; // Get the selected column
+            // Do something with the selectedColumn
+            console.log("Selected column:", selectedColumn);
+        });
+    });
+</script>
+
+</body>
+</html>

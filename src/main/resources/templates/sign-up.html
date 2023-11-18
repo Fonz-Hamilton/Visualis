@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/loginstyles.css}" />
+    <script th:src="@{/js/script.js}"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+
+    <title>Visualis - Sign-up</title>
+</head>
+<body>
+<header>
+    <div class="logo-container">
+
+        <a th:href="@{/home}">
+            <img th:src="@{/images/logo.png}" alt="Visualis"/>
+        </a>
+
+    </div>
+    <nav class="nav1">
+        <ul>
+            <li><a th:href="@{/home}">Home</a></li>
+            <li><a th:href="@{/visualize}">Visualize</a></li>
+            <li><a th:href="@{/about}">About</a></li>
+            <li style="margin-left:auto">
+                <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                    <!-- User is authenticated -->
+                    <a class="actlastnav" href="/logout">Logout</a>
+                </th:block>
+                <th:block th:unless="${#authorization.expression('isAuthenticated()')}">
+                    <!-- User is not authenticated -->
+                    <a class="actlastnav" th:href="@{/login}">Login</a>
+                </th:block>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="login-main-container">
+    <div class="loginhead">
+        <h1>Sign-Up</h1>
+    </div>
+    <div class="login-container">
+        <div class="loginbox">
+            <form action="#" th:action="@{/sign-up-processing}"  th:object="${userDto}"  id="userForm" method="post" enctype="utf8">
+
+                <label for="firstName">First Name:</label>
+                <span th:if="${#fields.hasErrors('firstName')}"
+                      th:class="${'error-message'}"th:errors="*{firstName}"></span><br/>
+                <input type="text" id="firstName" th:field="*{firstName}" th:class="${#fields.hasErrors('firstName')} ? 'required' : ''" placeholder= "First Name"/>
+
+
+                <label for="lastName">Last Name:</label>
+                <span th:if="${#fields.hasErrors('lastName')}"
+                      th:class="${'error-message'}"th:errors="*{lastName}"></span><br/>
+                <input type="text" id="lastName" th:field="*{lastName}" th:class="${#fields.hasErrors('firstName')} ? 'required' : ''" placeholder = "Last Name"/>
+
+
+                <label for="email">Email:</label>
+                <span th:if="${#fields.hasErrors('email')}"
+                      th:class="${'error-message'}"th:errors="*{email}"></span><br/>
+
+                <span th:if="${dupErrorMessage}" style="color: red;">
+
+                    <p th:if="${dupEmailMessage != null}" th:text="${dupEmailMessage}"></p>
+
+                </span>
+
+                <input type="text" id="email" th:field="*{email}" th:class="${#fields.hasErrors('firstName')} ? 'required' : ''" placeholder = "Last Name"/>
+
+
+                <label for="username">Username:</label>
+                <span th:if="${#fields.hasErrors('userName')}"
+                      th:class="${'error-message'}"th:errors="*{userName}"></span><br/>
+
+                <span th:if="${dupErrorMessage}" style="color: red;">
+
+
+                    <p th:if="${dupUsernameMessage != null}" th:text="${dupUsernameMessage}"></p>
+                </span>
+
+                <input type="text" id="username" th:field="*{userName}" th:class="${#fields.hasErrors('firstName')} ? 'required' : ''" placeholder = "Username"/>
+
+
+
+                <label for="password">Password:</label>
+                <span th:if="${#fields.hasErrors('password')}"
+                      th:class="${'error-message'}"th:errors="*{password}"></span><br/>
+                <input type="password" id="password" th:field="*{password}" th:class="${#fields.hasErrors('firstName')} ? 'required' : ''" placeholder = "Password"/>
+
+
+                <label for="matching-password">Re-Type Password:</label>
+                <span th:if="${#fields.hasErrors('matchingPassword')}"
+                      th:class="${'error-message'}"th:errors="*{matchingPassword}"></span><br/>
+                <input type="password" id="matching-password" th:field="*{matchingPassword}" th:class="${#fields.hasErrors('firstName')} ? 'required' : ''" placeholder = "Re-Type Password"/>
+
+
+                <!--<input class="ddd" type="button" value="Submit" onclick="validateEmail()"> -->
+                <input class="btn" type="submit" value="Submit" name="submitButton"/>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+    function validateEmail() {
+        const emailInput = document.getElementById("email");
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!emailPattern.test(emailInput.value)) {
+            alert("Invalid email address. Please enter a valid email.");
+            emailInput.focus();
+        }
+    }
+</script>
+</body>
+</html>

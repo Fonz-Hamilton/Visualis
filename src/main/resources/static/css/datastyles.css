@@ -1,0 +1,167 @@
+
+/**********************-Main-**********************/
+.data-main-container {
+    display:flex;
+    flex-direction: column;
+    background: linear-gradient(white, lightgrey);
+}
+
+/**********************-Top-**********************/
+.top {
+    display: flex;
+    flex-direction: row;
+
+
+}
+
+
+/**********************-Top:Side-**********************/
+.side {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 10px;
+    font-family: "Arial Rounded MT Bold", sans-serif;
+    max-width: 400px;
+}
+
+.upload {
+    margin: 20px;
+    padding: 10px;
+    background-color: white;
+    border: 2px solid #0000004D;
+}
+
+.upload form {
+
+}
+#fileUpload {
+    font-family: "Arial Rounded MT Bold", sans-serif;
+
+}
+.upload label {
+    font-family: "Arial Rounded MT Bold", sans-serif;
+
+}
+.option {
+    margin:20px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: white;
+    border: 2px solid #0000004D;
+}
+.dropdown1 {
+    margin: 10px;
+}
+.inputText {
+    margin: 10px;
+}
+.option button {
+    margin: 10px;
+}
+#dropdown2 {
+    margin: 10px;
+}
+#dropdown3 {
+    margin: 10px;
+}
+#chartType {
+    margin: 10px;
+}
+/**********************-Top:Table-Container-**********************/
+.table-container {
+    margin: 20px;
+    width: 100%;
+    height: 480px;
+    overflow: auto;
+    border: 1px solid darkgrey;
+    background-color: white;
+}
+
+
+/**********************-Top:Table-Container:Table-**********************/
+.table {
+    width: auto; /* Ensure the table takes up the full width of the container */
+    border: 1px solid lightgrey;
+    border-collapse: collapse; /* Optional: Style table borders */
+}
+.table td, th {
+    border: 1px solid lightgrey;
+    cursor: pointer;
+    font-family: Arial,sans-serif;
+    text-align: center;
+    min-width: 100px;
+    width: 100px;
+    height: auto;
+}
+
+
+/**********************-Middle-**********************/
+.middle {
+    display: flex;
+    flex-direction: column;
+
+}
+
+/**********************-Middle:VisButton-Container-**********************/
+.visbutton-container {
+    margin: 10px;
+    font-family: "Arial Rounded MT Bold", sans-serif;
+}
+
+/**********************-Middle:Graph-Container-**********************/
+.graph-container {
+    display:flex;
+    margin: 10px;
+    width: auto;
+    height: 500px;
+    border: 2px solid darkgrey;
+    background-color: white;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+}
+
+/**********************-Middle:Graph-Container: Graph-**********************/
+#chartContainer {
+    display: flex;
+
+    width:70%;
+    height: 70%;
+    object-fit: contain;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    object-position: center;
+    margin:15px;
+
+    font-family: Quicksand, "sans-serif";
+}
+
+
+
+
+
+
+
+select option[value=""] {
+
+}
+.graph {
+    width: 50%;
+    height: 50%;
+}
+.bar {
+    fill: #4b6e81;
+}
+.highlight {
+    fill: orange;
+}
+circle {
+    fill: #4b6e81;
+}
+
+/**********************-End-**********************/
