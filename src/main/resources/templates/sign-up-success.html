@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/loginstyles.css}" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+
+    <title>Visualis - Sign-Up Successful</title>
+</head>
+<header>
+    <div class="logo-container">
+        <a th:href="@{/home}">
+            <img th:src="@{/images/logo.png}" alt="Visualis"/>
+        </a>
+
+
+    </div>
+    <nav class="nav1">
+        <ul>
+            <li><a th:href="@{/home}">Home</a></li>
+            <li><a th:href="@{/visualize}">Visualize</a></li>
+            <li><a th:href="@{/about}">About</a></li>
+            <li style="margin-left:auto">
+                <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                    <!-- User is authenticated -->
+                    <a class="actlastnav" href="/logout">Logout</a>
+                </th:block>
+                <th:block th:unless="${#authorization.expression('isAuthenticated()')}">
+                    <!-- User is not authenticated -->
+                    <a class="actlastnav" th:href="@{/login}">Login</a>
+                </th:block>
+            </li>
+        </ul>
+    </nav>
+</header>
+<body>
+<div class="signupsucess-container">
+    <div>
+        <h1>Sign-up Successful!</h1>
+        <div class="signupbtnbox">
+            <a class="signupbtn" th:href="@{/login}">Login</a>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
