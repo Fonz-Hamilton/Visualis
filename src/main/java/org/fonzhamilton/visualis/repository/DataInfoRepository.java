@@ -10,4 +10,5 @@ public interface DataInfoRepository extends JpaRepository<DataInfo, Long> {
     public DataInfo findDataInfoByName(String name);
     public boolean existsByName(String name);
 
+
 }

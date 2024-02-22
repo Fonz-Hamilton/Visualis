@@ -1,55 +1,47 @@
 package org.fonzhamilton.visualis;
 
+import lombok.extern.slf4j.Slf4j;
+import org.fonzhamilton.visualis.model.Role;
+import org.fonzhamilton.visualis.repository.DataInfoRepository;
+import org.fonzhamilton.visualis.repository.DataRepository;
+import org.fonzhamilton.visualis.repository.RoleRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@Slf4j
 @SpringBootTest
 
 class VisualisApplicationTests {
-/*
-    @Autowired
-    public DataInfoRepository dataInfoRepository;
-    @Autowired
-    public DataRepository dataRepository;
-    @Autowired
-    public RoleRepository roleRepository;
-    @Autowired
-    public UserRepository userRepository;
-    @Autowired
-    public RoleService roleService;
-    @Autowired
-    public DataInfoService dataInfoService;
-    @Mock
-    private DataInfoRepository dataInfoRepositoryMock;
-    @Mock
-    public DataRepository dataRepositoryMock;
-    @InjectMocks
-    public DataService dataServiceMock;
-    @Mock
-    public RoleRepository roleRepositoryMock;
-    @Mock
-    public UserRepository userRepositoryMock;
 
-    @InjectMocks
-    private DataInfoService dataInfoServiceMock;
-    @InjectMocks
-    public RoleService roleServiceMock;
-    @InjectMocks
-    public UserService userServiceMock;
-
-    @Test
-    public void contextLoads() {
-    }
+    @Autowired
+    DataInfoRepository dataInfoRepository;
+    @Autowired
+    RoleRepository roleRepository;
 
     @BeforeAll
     public static void initializeStuff() {
 
 
     }
-
+/*
     @Test
     public void testDataInfoRepositoryExistsByName() {
+        log.warn("tesssst");
+
+        if(dataInfoRepository.existsByName("test")) {
+            log.warn("This shouldnt work");
+        }
+        else {
+            log.warn("this should work");
+        }
+
 
 
         String name = "testName";
@@ -64,8 +56,12 @@ class VisualisApplicationTests {
         assertTrue(exists, "Data of name should exist");
 
         verify(dataInfoRepositoryMock, times(1)).existsByName(name);
+
+
     }
 
+ */
+    /*
 
     @Test
     public void testFindDataByName() {
@@ -132,21 +128,21 @@ class VisualisApplicationTests {
                 Arguments.of(3L)
         );
     }
-
+*/
     @Test
     public void testFindRoleByName() {
 
-        String roleName = "ROLE_USER";
+
+        String roleName = "test";
         Role testRole = new Role();
         testRole.setName(roleName);
         roleRepository.save(testRole);
 
-
         Role foundRole = roleRepository.findRoleByName(roleName);
-
 
         assertNotNull(foundRole, "Role is found");
         assertEquals(roleName, foundRole.getName(), "Role names should match");
+
 
     }
 
@@ -154,26 +150,16 @@ class VisualisApplicationTests {
     @Test
     public void testFindRoleByUser() {
 
-        long userId = 1L; // Assuming user with ID 1 exists
-        User testUser = new User();
-        testUser.setId(userId);
-        userRepository.save(testUser);
+        // id 1 should be admin
+        long roleId = 1l;
+        // roles are list in case users with multiple roles are needed
+        List<Role> foundRole = roleRepository.findRoleByUser(roleId);
 
-        Role testRole = new Role();
-        roleRepository.save(testRole);
-
-        testUser.setRoles(Arrays.asList(roleService.findRoleByRoleName(testRole.getName())));
-
-        List<Role> foundRoles = roleRepository.findRoleByUser(userId);
-
-        assertNotNull(foundRoles, "Roles should be found");
-        assertFalse(foundRoles.isEmpty(), "Roles list should not be empty");
-        assertEquals(1, foundRoles.size(), "Only one role should be found");
-        assertEquals(testRole.getId(), foundRoles.get(0).getId(), "Role IDs should match");
+        assertEquals(foundRole.get(0).getName(), "ROLE_ADMIN", "Role should match");
 
     }
 
-
+/*
     @Test
     public void testFindUserByEmail() {
 
@@ -297,10 +283,7 @@ class VisualisApplicationTests {
 
 
  */
-    @Test
-    public void testss() {
 
-    }
 
 }
 

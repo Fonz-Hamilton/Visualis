@@ -12,6 +12,7 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     public Role findRoleByName(String role);
 
+    // roles are list in case users with multiple roles are needed
     @Query(value = "select * from role where role.id= (select role_id from users_roles where user_id = :id)", nativeQuery = true)
     public List<Role> findRoleByUser(@Param("id") long id);
 }
