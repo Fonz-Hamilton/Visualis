@@ -2,9 +2,11 @@ package org.fonzhamilton.visualis;
 
 import lombok.extern.slf4j.Slf4j;
 import org.fonzhamilton.visualis.model.Role;
+import org.fonzhamilton.visualis.model.User;
 import org.fonzhamilton.visualis.repository.DataInfoRepository;
 import org.fonzhamilton.visualis.repository.DataRepository;
 import org.fonzhamilton.visualis.repository.RoleRepository;
+import org.fonzhamilton.visualis.repository.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ class VisualisApplicationTests {
     DataInfoRepository dataInfoRepository;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @BeforeAll
     public static void initializeStuff() {
@@ -159,7 +163,7 @@ class VisualisApplicationTests {
 
     }
 
-/*
+
     @Test
     public void testFindUserByEmail() {
 
@@ -175,6 +179,7 @@ class VisualisApplicationTests {
         assertEquals(email, foundUser.getEmail(), "User emails should match");
 
     }
+
 
     @Test
     public void testFindUserByUserName() {
@@ -192,6 +197,7 @@ class VisualisApplicationTests {
 
     }
 
+
     @Test
     public void testUserExistsByEmail() {
 
@@ -202,9 +208,10 @@ class VisualisApplicationTests {
 
         boolean exists = userRepository.existsByEmail(email);
 
-        assertTrue(exists, "User should exist with that email");
+        assertEquals(exists, true, "User should exist with that email");
 
     }
+
 
     @Test
     public void testExistsByUserName() {
@@ -218,10 +225,10 @@ class VisualisApplicationTests {
         boolean exists = userRepository.existsByEmail(existingEmail);
 
 
-        assertTrue(exists, "User should exist with that email");
+        assertEquals(exists, true, "User should exist with that email");
 
     }
-
+/*
     @Test
     public void testDataInfoServiceExistsByName() {
 
