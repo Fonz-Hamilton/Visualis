@@ -1,6 +1,7 @@
 package org.fonzhamilton.visualis;
 
 import lombok.extern.slf4j.Slf4j;
+import org.fonzhamilton.visualis.model.Data;
 import org.fonzhamilton.visualis.model.Role;
 import org.fonzhamilton.visualis.model.User;
 import org.fonzhamilton.visualis.repository.DataInfoRepository;
@@ -28,6 +29,8 @@ class VisualisApplicationTests {
     RoleRepository roleRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    DataRepository dataRepository;
 
     @BeforeAll
     public static void initializeStuff() {
@@ -65,7 +68,7 @@ class VisualisApplicationTests {
     }
 
  */
-    /*
+
 
     @Test
     public void testFindDataByName() {
@@ -82,57 +85,57 @@ class VisualisApplicationTests {
         assertEquals(nameToSearch, foundData.getName(), "Names should match");
 
     }
+    /*
+        @Test
+        public void testFindDataById() {
 
-    @Test
-    public void testFindDataById() {
-
-        Data testData = new Data();
-        testData.setId(1L); // setting the id as a long for testing
-        testData.setName("TestName");
-        dataRepository.save(testData);
-
-
-        List<Data> foundDataList = dataRepository.findDataById(1L);
+            Data testData = new Data();
+            testData.setId(1L); // setting the id as a long for testing
+            testData.setName("TestName");
+            dataRepository.save(testData);
 
 
-        assertFalse(foundDataList.isEmpty(), "Data should be found");
-        assertEquals(1, foundDataList.size(), "Only one data entry should be found");
-        assertEquals("TestName", foundDataList.get(0).getName(), "Names should match");
-
-    }
+            List<Data> foundDataList = dataRepository.findDataById(1L);
 
 
-    @ParameterizedTest
-    @MethodSource("userIdProvider")
-    public void testGetAllDataByUserId(Long userId) {
+            assertFalse(foundDataList.isEmpty(), "Data should be found");
+            assertEquals(1, foundDataList.size(), "Only one data entry should be found");
+            assertEquals("TestName", foundDataList.get(0).getName(), "Names should match");
 
-        Data testData1 = new Data();
-        testData1.setUser(new User()); // Assuming Data has a User association
-        testData1.setName("TestName1");
-        dataRepository.save(testData1);
-
-        Data testData2 = new Data();
-        testData2.setUser(new User()); // Assuming Data has a User association
-        testData2.setName("TestName2");
-        dataRepository.save(testData2);
+        }
 
 
-        List<Data> foundDataList = dataRepository.getAllDataByUserId(userId);
+        @ParameterizedTest
+        @MethodSource("userIdProvider")
+        public void testGetAllDataByUserId(Long userId) {
+
+            Data testData1 = new Data();
+            testData1.setUser(new User()); // Assuming Data has a User association
+            testData1.setName("TestName1");
+            dataRepository.save(testData1);
+
+            Data testData2 = new Data();
+            testData2.setUser(new User()); // Assuming Data has a User association
+            testData2.setName("TestName2");
+            dataRepository.save(testData2);
 
 
-        assertEquals(2, foundDataList.size(), "Two data entries should be found");
+            List<Data> foundDataList = dataRepository.getAllDataByUserId(userId);
 
-    }
 
-    // Helper method
-    private static Stream<Arguments> userIdProvider() {
-        return Stream.of(
-                Arguments.of(1L),
-                Arguments.of(2L),
-                Arguments.of(3L)
-        );
-    }
-*/
+            assertEquals(2, foundDataList.size(), "Two data entries should be found");
+
+        }
+
+        // Helper method
+        private static Stream<Arguments> userIdProvider() {
+            return Stream.of(
+                    Arguments.of(1L),
+                    Arguments.of(2L),
+                    Arguments.of(3L)
+            );
+        }
+    */
     @Test
     public void testFindRoleByName() {
 
