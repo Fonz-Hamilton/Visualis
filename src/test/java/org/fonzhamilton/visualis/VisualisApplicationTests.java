@@ -1,22 +1,33 @@
 package org.fonzhamilton.visualis;
 
 import lombok.extern.slf4j.Slf4j;
+import org.fonzhamilton.visualis.dto.UserDTO;
 import org.fonzhamilton.visualis.model.Data;
+import org.fonzhamilton.visualis.model.DataInfo;
 import org.fonzhamilton.visualis.model.Role;
 import org.fonzhamilton.visualis.model.User;
 import org.fonzhamilton.visualis.repository.DataInfoRepository;
 import org.fonzhamilton.visualis.repository.DataRepository;
 import org.fonzhamilton.visualis.repository.RoleRepository;
 import org.fonzhamilton.visualis.repository.UserRepository;
+import org.fonzhamilton.visualis.service.DataInfoService;
+import org.fonzhamilton.visualis.service.RoleService;
+import org.fonzhamilton.visualis.service.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
@@ -31,43 +42,34 @@ class VisualisApplicationTests {
     UserRepository userRepository;
     @Autowired
     DataRepository dataRepository;
+    @Autowired
+    DataInfoService dataInfoService;
+    @Autowired
+    RoleService roleService;
+    @Autowired
+    UserService userService;
 
     @BeforeAll
     public static void initializeStuff() {
 
 
     }
-/*
+
     @Test
     public void testDataInfoRepositoryExistsByName() {
-        log.warn("tesssst");
-
-        if(dataInfoRepository.existsByName("test")) {
-            log.warn("This shouldnt work");
-        }
-        else {
-            log.warn("this should work");
-        }
-
-
 
         String name = "testName";
 
-
-        when(dataInfoRepository.existsByName(name)).thenReturn(true);
-
-
-        boolean exists = dataInfoServiceMock.existsByName(name);
-
+        DataInfo dataInfo = new DataInfo();
+        dataInfo.setName(name);
+        dataInfoRepository.save(dataInfo);
+        boolean exists = dataInfoRepository.existsByName(name);
 
         assertTrue(exists, "Data of name should exist");
 
-        verify(dataInfoRepositoryMock, times(1)).existsByName(name);
-
-
     }
 
- */
+
 
 
     @Test
@@ -85,12 +87,13 @@ class VisualisApplicationTests {
         assertEquals(nameToSearch, foundData.getName(), "Names should match");
 
     }
-    /*
+
         @Test
         public void testFindDataById() {
 
             Data testData = new Data();
             testData.setId(1L); // setting the id as a long for testing
+                                // Future me asks why wouldnt it be a long?
             testData.setName("TestName");
             dataRepository.save(testData);
 
@@ -104,20 +107,24 @@ class VisualisApplicationTests {
 
         }
 
-
+/*
         @ParameterizedTest
         @MethodSource("userIdProvider")
         public void testGetAllDataByUserId(Long userId) {
+            User user = new User();
+            user.setId(userId);
+
 
             Data testData1 = new Data();
-            testData1.setUser(new User()); // Assuming Data has a User association
+            testData1.setUser(user); // Assuming Data has a User association
             testData1.setName("TestName1");
             dataRepository.save(testData1);
 
             Data testData2 = new Data();
-            testData2.setUser(new User()); // Assuming Data has a User association
+            testData2.setUser(user); // Assuming Data has a User association
             testData2.setName("TestName2");
             dataRepository.save(testData2);
+
 
 
             List<Data> foundDataList = dataRepository.getAllDataByUserId(userId);
@@ -135,7 +142,9 @@ class VisualisApplicationTests {
                     Arguments.of(3L)
             );
         }
-    */
+
+ */
+
     @Test
     public void testFindRoleByName() {
 
@@ -211,7 +220,7 @@ class VisualisApplicationTests {
 
         boolean exists = userRepository.existsByEmail(email);
 
-        assertEquals(exists, true, "User should exist with that email");
+        assertTrue(exists, "User should exist with that email");
 
     }
 
@@ -228,7 +237,7 @@ class VisualisApplicationTests {
         boolean exists = userRepository.existsByEmail(existingEmail);
 
 
-        assertEquals(exists, true, "User should exist with that email");
+        assertTrue(exists, "User should exist with that email");
 
     }
 /*
@@ -290,11 +299,6 @@ class VisualisApplicationTests {
 
     }
 
-
-
  */
 
-
 }
-
-
