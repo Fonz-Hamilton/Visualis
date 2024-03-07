@@ -1,6 +1,7 @@
 package org.fonzhamilton.visualis;
 
 import lombok.extern.slf4j.Slf4j;
+import org.fonzhamilton.visualis.dto.DataDTO;
 import org.fonzhamilton.visualis.dto.UserDTO;
 import org.fonzhamilton.visualis.model.Data;
 import org.fonzhamilton.visualis.model.DataInfo;
@@ -10,7 +11,9 @@ import org.fonzhamilton.visualis.repository.DataInfoRepository;
 import org.fonzhamilton.visualis.repository.DataRepository;
 import org.fonzhamilton.visualis.repository.RoleRepository;
 import org.fonzhamilton.visualis.repository.UserRepository;
+import org.fonzhamilton.visualis.security.UserPrincipal;
 import org.fonzhamilton.visualis.service.DataInfoService;
+import org.fonzhamilton.visualis.service.DataService;
 import org.fonzhamilton.visualis.service.RoleService;
 import org.fonzhamilton.visualis.service.UserService;
 import org.junit.jupiter.api.BeforeAll;
@@ -43,11 +46,14 @@ class VisualisApplicationTests {
     @Autowired
     DataRepository dataRepository;
     @Autowired
+    DataService dataService;
+    @Autowired
     DataInfoService dataInfoService;
     @Autowired
     RoleService roleService;
     @Autowired
     UserService userService;
+
 
     @BeforeAll
     public static void initializeStuff() {
@@ -69,9 +75,6 @@ class VisualisApplicationTests {
 
     }
 
-
-
-
     @Test
     public void testFindDataByName() {
         String nameToSearch = "YourDataName";
@@ -82,68 +85,82 @@ class VisualisApplicationTests {
 
         Data foundData = dataRepository.findDataByName(nameToSearch);
 
-
         assertNotNull(foundData, "Data should be found");
         assertEquals(nameToSearch, foundData.getName(), "Names should match");
 
     }
 
-        @Test
-        public void testFindDataById() {
+    @Test
+    public void testFindDataById() {
 
-            Data testData = new Data();
-            testData.setId(1L); // setting the id as a long for testing
+        Data testData = new Data();
+        testData.setId(1L); // setting the id as a long for testing
                                 // Future me asks why wouldnt it be a long?
-            testData.setName("TestName");
-            dataRepository.save(testData);
+        testData.setName("TestName");
+        dataRepository.save(testData);
 
 
-            List<Data> foundDataList = dataRepository.findDataById(1L);
+        List<Data> foundDataList = dataRepository.findDataById(1L);
 
 
-            assertFalse(foundDataList.isEmpty(), "Data should be found");
-            assertEquals(1, foundDataList.size(), "Only one data entry should be found");
-            assertEquals("TestName", foundDataList.get(0).getName(), "Names should match");
+        assertFalse(foundDataList.isEmpty(), "Data should be found");
+        assertEquals(1, foundDataList.size(), "Only one data entry should be found");
+        assertEquals("TestName", foundDataList.get(0).getName(), "Names should match");
 
-        }
-
-/*
-        @ParameterizedTest
-        @MethodSource("userIdProvider")
-        public void testGetAllDataByUserId(Long userId) {
-            User user = new User();
-            user.setId(userId);
+    }
 
 
-            Data testData1 = new Data();
-            testData1.setUser(user); // Assuming Data has a User association
-            testData1.setName("TestName1");
-            dataRepository.save(testData1);
+    @ParameterizedTest
+    @MethodSource("userIdProvider")
+    public void testGetAllDataByUserId(Long userId) {
+        User user = new User();
+        user.setId(userId);
+        user.setPassword("testpass");
+        user.setFirstName("testFirst");
+        user.setLastName("testLast");
+        user.setUserName("DataTest" + userId.toString());
+        user.setEmail("DataTest" + userId.toString() + "test.com");
 
-            Data testData2 = new Data();
-            testData2.setUser(user); // Assuming Data has a User association
-            testData2.setName("TestName2");
-            dataRepository.save(testData2);
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
 
+        // Persist the user entity
+        userRepository.save(user);
 
+        // Retrieve the persisted user entity
+        user = userRepository.findUserById(userId);
 
-            List<Data> foundDataList = dataRepository.getAllDataByUserId(userId);
+        // Create a DataDTO object
+        DataDTO dataDTO = new DataDTO();
+        dataDTO.setName("testdata");
+        dataDTO.setUser(user);
 
+        // Persist the DataDTO object
+        dataService.createData(dataDTO, user.getId());
 
-            assertEquals(2, foundDataList.size(), "Two data entries should be found");
+        // Create a DataDTO object
+        DataDTO dataDTO2 = new DataDTO();
+        dataDTO2.setName("testdata");
+        dataDTO2.setUser(user);
 
-        }
+        // Persist the DataDTO object
+        dataService.createData(dataDTO2, user.getId());
 
-        // Helper method
-        private static Stream<Arguments> userIdProvider() {
-            return Stream.of(
-                    Arguments.of(1L),
-                    Arguments.of(2L),
-                    Arguments.of(3L)
-            );
-        }
+        List<Data> foundDataList = dataRepository.getAllDataByUserId(userId);
 
- */
+        assertEquals(2, foundDataList.size(), "Two data entries should be found");
+
+    }
+
+    // Helper method
+    private static Stream<Arguments> userIdProvider() {
+        return Stream.of(
+                Arguments.of(1L),
+                Arguments.of(2L),
+                Arguments.of(3L)
+        );
+    }
 
     @Test
     public void testFindRoleByName() {
@@ -167,7 +184,7 @@ class VisualisApplicationTests {
     public void testFindRoleByUser() {
 
         // id 1 should be admin
-        long roleId = 1l;
+        long roleId = 1L;
         // roles are list in case users with multiple roles are needed
         List<Role> foundRole = roleRepository.findRoleByUser(roleId);
 
@@ -179,7 +196,7 @@ class VisualisApplicationTests {
     @Test
     public void testFindUserByEmail() {
 
-        String email = "test@example.com";
+        String email = "testFind@example.com";
         User testUser = new User();
         testUser.setEmail(email);
         userRepository.save(testUser);
@@ -228,7 +245,7 @@ class VisualisApplicationTests {
     @Test
     public void testExistsByUserName() {
 
-        String existingEmail = "test@example.com";
+        String existingEmail = "test2@example.com";
         User testUser = new User();
         testUser.setEmail(existingEmail);
         userRepository.save(testUser);
@@ -240,65 +257,55 @@ class VisualisApplicationTests {
         assertTrue(exists, "User should exist with that email");
 
     }
-/*
+
     @Test
     public void testDataInfoServiceExistsByName() {
 
-        String nonExistentName = "nonexistentName";
-        when(dataInfoRepositoryMock.existsByName(nonExistentName)).thenReturn(false);
+        String name = "nonexistentName";
 
-
-        boolean exists = dataInfoServiceMock.existsByName(nonExistentName);
-
+        boolean exists = dataInfoService.existsByName(name);
 
         assertFalse(exists, "Data should not exist with the specified name");
 
-        verify(dataInfoRepositoryMock, times(1)).existsByName(nonExistentName);
+        name = "existingName";
+        DataInfo dataInfo = new DataInfo();
+        dataInfo.setName(name);
+        dataInfoRepository.save(dataInfo);
+
+        exists = dataInfoService.existsByName(name);
+
+        assertTrue(exists, "Data should exist by that name");
 
     }
+
 
     @Test
     public void testDataServiceGetDataByName() {
 
-        String existingName = "testName";
+        String existingName = "testName2";
 
         Data testData = new Data();
         testData.setName(existingName);
-        when(dataRepositoryMock.findDataByName(existingName)).thenReturn(testData);
+        dataRepository.save(testData);
 
-
-        Data result = dataServiceMock.getDataByName(existingName);
-
+        Data result = dataService.getDataByName(existingName);
 
         assertNotNull(result, "Data should be found with the specified name");
         assertEquals(existingName, result.getName(), "Data names should match");
 
-        verify(dataRepositoryMock, times(1)).findDataByName(existingName);
 
     }
 
     @Test
     public void testRoleServiceFindRoleByRoleName() {
 
-        String roleName = "testRole";
+        String roleName = "ROLE_ADMIN";
 
-
-
-        Role testRole = new Role();
-        testRole.setName(roleName);
-        when(roleRepositoryMock.findRoleByName(roleName)).thenReturn(testRole);
-
-
-        Role result = roleServiceMock.findRoleByRoleName(roleName);
-
+        Role result = roleService.findRoleByRoleName(roleName);
 
         assertNotNull(result, "Role should be found with the specified name");
         assertEquals(roleName, result.getName(), "Role names should match");
 
-        verify(roleRepositoryMock, times(1)).findRoleByName(roleName);
-
     }
-
- */
 
 }
