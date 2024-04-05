@@ -9,9 +9,6 @@ _______________________________________________________________
 Branch versions:
 main:         this branch will be setup to work with an apache server
 v-localhost:  this branch will be setup to work on localhost
-
-Will update both as things change
-As of writing nothing significant has changed between the two branches
 _______________________________________________________________
 How it works
 Visualis is a website where users can enter a data file and see it
@@ -42,5 +39,17 @@ Join tables
 user_data: user_id, data_id
 data_dataInfo: data_id, dataInfo_id
 user_roles: user_id, role_id
+_______________________________________________________________
+Things for apache2 server
+
+Apache2 is being used as a reverse proxy
+The plugin the root user uses is cache_sha2_password on mysql
+To use the password 'DATABASE_PASSWORD' an environment variable is set in bash
+
+To run in the background use command:
+nohup java -jar whatever-visualis-version.jar > visualis.log 2>&1 &
+
+View the log with:
+tail -f visualis.log
 _______________________________________________________________
 https://github.com/Fonz-Hamilton
