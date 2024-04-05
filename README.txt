@@ -9,9 +9,6 @@ _______________________________________________________________
 Branch versions:
 main:         this branch will be setup to work with an apache server
 v-localhost:  this branch will be setup to work on localhost
-
-Will update both as things change
-As of writing nothing significant has changed between the two branches
 _______________________________________________________________
 How it works
 Visualis is a website where users can enter a data file and see it
