@@ -10,7 +10,7 @@
     </parent>
     <groupId>org.fonzhamilton</groupId>
     <artifactId>Visualis</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.1-SNAPSHOT</version>
     <name>Visualis</name>
     <description>Visualis</description>
     <properties>
