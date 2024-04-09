@@ -46,6 +46,7 @@ public class UserInitializer {
 
     private void createAdminUser() {
         // Check if the admin user already exists
+        // this is mostly just for testing with create-drop
         User existingAdmin = userService.existsByUserName("admin");
         if (existingAdmin == null) {
             // Create an admin user
@@ -57,6 +58,7 @@ public class UserInitializer {
             admin.setEmail("admin@visualis.com");
 
             admin.setPassword("admin"); // obfuscate somehow in real production
+                                        // or dont use at all!
 
             ModelMapper modelMapper = new ModelMapper();
             modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -66,6 +68,7 @@ public class UserInitializer {
             user.setRoles(Arrays.asList(roleService.findRoleByRoleName("ROLE_ADMIN")));
 
             // really crappy hack if this works. dogshit dare I say
+            // TODO: make function that handles stuff like this
             admin = modelMapper.map(user, UserDTO.class);
 
             // Save the admin user
