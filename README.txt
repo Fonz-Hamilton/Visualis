@@ -37,7 +37,7 @@ DataInfo: id, name, description, datatype, source link to location on server
 
 Join tables
 data_info: data_id, dataInfo_id
-user_roles: user_id, role_id
+users_roles: user_id, role_id
 _______________________________________________________________
 Things for apache2 server
 
