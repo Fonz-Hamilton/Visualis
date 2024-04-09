@@ -36,8 +36,8 @@ Data: id, name, data_info_id
 DataInfo: id, name, description, datatype, source link to location on server
 
 Join tables
-user_data: user_id, data_id
-data_dataInfo: data_id, dataInfo_id
+data_info: data_id, dataInfo_id
 user_roles: user_id, role_id
+
 _______________________________________________________________
 https://github.com/Fonz-Hamilton
