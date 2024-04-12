@@ -5,11 +5,15 @@ import org.fonzhamilton.visualis.model.User;
 import org.fonzhamilton.visualis.repository.DataRepository;
 import org.fonzhamilton.visualis.model.Data;
 import org.fonzhamilton.visualis.repository.UserRepository;
+import org.fonzhamilton.visualis.util.ModelDTOMapper;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -28,9 +32,7 @@ public class DataServiceImpl implements DataService{
 
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
 
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        Data data = modelMapper.map(dataDTO, Data.class);
+        Data data = ModelDTOMapper.dataDTOToData(dataDTO);  // map dataDTO to data model
 
         // Set the user for the data
         data.setUser(user);

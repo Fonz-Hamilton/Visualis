@@ -8,6 +8,9 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.fonzhamilton.visualis.model.Role;
+
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -37,6 +40,8 @@ public class UserDTO {
 
     @NotEmpty(message = "Required")
     private String matchingPassword;
+
+    private Collection<Role> roles;
 
     public UserDTO(@NotEmpty String userName, @Pattern(regexp = "[A-Za-z]+$", message = "Only alphabetic allowed") String firstName, @Pattern(regexp = "[A-Za-z]+$", message = "Only alphabetic allowed") String lastName, @Email String email, @NotEmpty(message = "Required") String password, @NotEmpty(message = "Required") String matchingPassword) {
         this.userName = userName;

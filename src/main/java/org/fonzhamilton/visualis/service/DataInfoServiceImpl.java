@@ -3,6 +3,7 @@ package org.fonzhamilton.visualis.service;
 import org.fonzhamilton.visualis.dto.DataInfoDTO;
 import org.fonzhamilton.visualis.repository.DataInfoRepository;
 import org.fonzhamilton.visualis.model.DataInfo;
+import org.fonzhamilton.visualis.util.ModelDTOMapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,10 @@ public class DataInfoServiceImpl implements DataInfoService {
     }
 
     // no idea why I put an id in the parameters
-    // should take it out but not now dont have time to break this
+    // should take it out but not now don't have time to break this
     public DataInfo createDataInfo(DataInfoDTO dataInfoDTO, Long dataId) {
 
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        DataInfo dataInfo = modelMapper.map(dataInfoDTO, DataInfo.class);
+        DataInfo dataInfo = ModelDTOMapper.dataInfoDTOToDataInfo(dataInfoDTO);
 
         return dataInfoRepository.save(dataInfo);
     }

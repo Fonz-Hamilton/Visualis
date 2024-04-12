@@ -17,17 +17,12 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
     private String firstName;
-
     private String lastName;
-
     @Column(unique = true)
     private String userName;
-
     @Column(unique = true)
     private String email;
-
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
