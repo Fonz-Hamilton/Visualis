@@ -21,7 +21,5 @@ public class DataInfo {
     private String sourceLink;
     private String dataType;
     private String description;
-
-
 }
 

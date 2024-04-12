@@ -6,10 +6,9 @@ import org.fonzhamilton.visualis.dto.UserDTO;
 import org.fonzhamilton.visualis.model.Role;
 import org.fonzhamilton.visualis.security.UserPrincipal;
 import org.fonzhamilton.visualis.model.User;
+import org.fonzhamilton.visualis.util.ModelDTOMapper;
 
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 
@@ -58,7 +58,8 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     * @param userDTO
+     * Create a new user using UserDTO
+     * @param userDTO The user DTO containing information for creating user
      */
     @Transactional
     public void create(UserDTO userDTO) {
@@ -76,25 +77,20 @@ public class UserServiceImpl implements UserService {
         }
 
         else {
-
-            ModelMapper modelMapper = new ModelMapper();
-            modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-            User user = modelMapper.map(userDTO, User.class);
+            // map userDTO to user
+            User user = ModelDTOMapper.userDTOToUser(userDTO);
 
             // check to see if email already exists
 
             user.setPassword(encoder.encode(user.getPassword()));
             if(userDTO.getEmail().equals("admin@visualis.com")) {
-                user.setRoles(Arrays.asList(roleService.findRoleByRoleName("ROLE_ADMIN")));
+                user.setRoles(Collections.singletonList(roleService.findRoleByRoleName("ROLE_ADMIN")));
             }
             else {
-                user.setRoles(Arrays.asList(roleService.findRoleByRoleName("ROLE_USER")));
+                user.setRoles(Collections.singletonList(roleService.findRoleByRoleName("ROLE_USER")));
             }
 
-
             log.debug("Roles assigned to user: {}", user.getRoles());
-            System.out.println("Roles assigned to user: {}" + user.getRoles());
-
             userRepository.save(user);
         }
     }
@@ -103,7 +99,6 @@ public class UserServiceImpl implements UserService {
     {
         return userRepository.findUserByEmail(email);
     }
-
     public User findUserByName(String name)
     {
         return userRepository.findUserByUserName(name);

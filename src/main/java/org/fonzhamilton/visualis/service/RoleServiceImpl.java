@@ -35,8 +35,6 @@ public class RoleServiceImpl implements RoleService{
         roleRepository.save(role);
     }
 
-
-
     @Override
     @Transactional
     public Role findRoleByRoleName(String name) {

@@ -2,6 +2,7 @@ package org.fonzhamilton.visualis.service;
 
 import org.fonzhamilton.visualis.dto.UserDTO;
 import org.fonzhamilton.visualis.model.User;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
