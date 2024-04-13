@@ -40,15 +40,23 @@ public class FileUtil {
         return getRelativePath(filePath);
     }
 
+    /**
+     * Get file type using MIME
+     * @param file Multipart file that user uploads
+     * @return String containing what the type is
+     */
     public String getFileType(MultipartFile file) {
+        String fileType = file.getContentType();
 
-        // super basic example. may need to enhance it based on file content or extension
-        String originalFilename = file.getOriginalFilename();
-        Objects.requireNonNull(originalFilename);
+        // return unknown if empty or null
+        if (fileType == null || fileType.isEmpty()) {
+            return "unkown";
+        }
 
-        int lastDotIndex = originalFilename.lastIndexOf('.');
-        if (lastDotIndex != -1 && lastDotIndex < originalFilename.length() - 1) {
-            return originalFilename.substring(lastDotIndex + 1).toLowerCase();
+        // get file type from content type
+        String[] parts = fileType.split("/");
+        if(parts.length == 2) {
+            return parts[1].toLowerCase();
         }
 
         // Default to an unknown
