@@ -20,10 +20,8 @@ public class DataInfoServiceImpl implements DataInfoService {
     public DataInfoServiceImpl(DataInfoRepository dataInfoRepository) {
         this.dataInfoRepository = dataInfoRepository;
     }
-
-    // no idea why I put an id in the parameters
-    // should take it out but not now don't have time to break this
-    public DataInfo createDataInfo(DataInfoDTO dataInfoDTO, Long dataId) {
+    
+    public DataInfo createDataInfo(DataInfoDTO dataInfoDTO) {
 
         DataInfo dataInfo = ModelDTOMapper.dataInfoDTOToDataInfo(dataInfoDTO);
 
