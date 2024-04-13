@@ -58,7 +58,7 @@ public class FileServiceImpl implements FileService {
             dataInfoDTO.setDescription(description);
 
             // Create DataInfo entity
-            DataInfo savedDataInfoDTO = dataInfoService.createDataInfo(dataInfoDTO, user.getId());
+            DataInfo savedDataInfoDTO = dataInfoService.createDataInfo(dataInfoDTO);
 
             // Create Data entity
             DataDTO dataDTO = new DataDTO();
