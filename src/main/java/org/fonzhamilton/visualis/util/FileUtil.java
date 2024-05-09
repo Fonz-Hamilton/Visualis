@@ -41,16 +41,27 @@ public class FileUtil {
     }
 
     /**
-     * Get file type using MIME
+     * Get file type using MIME. it actually kinda sucks cause of vnd.ms-excel
+     * So check file extension in name first
      * @param file Multipart file that user uploads
      * @return String containing what the type is
      */
     public String getFileType(MultipartFile file) {
+        // get original file name
+        String originalFilename = file.getOriginalFilename();
+        Objects.requireNonNull(originalFilename);
+
+        int lastDotIndex = originalFilename.lastIndexOf('.');
+        // if lastDotIndex doesn't find '.' it will be -1. Also check to make sure it is not "file." with no ext
+        if (lastDotIndex != -1 && lastDotIndex < originalFilename.length() - 1 &&
+                lastDotIndex != originalFilename.length() -1) {
+            return originalFilename.substring(lastDotIndex + 1).toLowerCase();
+        }
         String fileType = file.getContentType();
 
         // return unknown if empty or null
         if (fileType == null || fileType.isEmpty()) {
-            return "unkown";
+            return "unknown";
         }
 
         // get file type from content type
