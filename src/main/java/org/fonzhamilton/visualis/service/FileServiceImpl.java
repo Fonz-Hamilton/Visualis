@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -55,7 +56,7 @@ public class FileServiceImpl implements FileService {
 
             // create DataInfoDTO with file information
             DataInfoDTO dataInfoDTO = new DataInfoDTO();
-            dataInfoDTO.setSourceLink(filePath + "/" + realFileName);
+            dataInfoDTO.setSourceLink(filePath + File.separator + realFileName);
             log.debug("SourcePath for file {}", dataInfoDTO.getSourceLink());
             dataInfoDTO.setName(fileName);
             dataInfoDTO.setDataType(fileUtil.getFileType(file));
