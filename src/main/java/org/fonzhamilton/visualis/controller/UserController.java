@@ -80,6 +80,7 @@ public class UserController {
             return "sign-up-success";
         } catch (DuplicateUserException e) {
             log.debug("Duplicate user or email: {}", e.getMessage());
+            // This is the message that thymeleaf uses. It takes the exception and displays it
             model.addAttribute("dupErrorMessage", "Duplicate user or email");
             model.addAttribute("dupEmailMessage", e.getEmailMessage());
             model.addAttribute("dupUsernameMessage", e.getUsernameMessage());
