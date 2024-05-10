@@ -76,8 +76,8 @@ public class DataController {
 
     }
 
-    @PostMapping("/fetchFileLocation")
-    public String getFileLocation(@RequestParam(name = "name", required = false) String name, Model model, Authentication authentication) {
+    @PostMapping("/load-data")
+    public String getFile(@RequestParam(name = "name", required = false) String name, Model model, Authentication authentication) {
         try {
             if (name == null || name.trim().isEmpty()) {
                 // Handle the case where 'name' is empty
