@@ -36,7 +36,6 @@ public class SecurityConfiguration {
 
         return auth;
     }
-
     //beans
     //bcrypt bean definition
     @Bean
@@ -45,19 +44,16 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder(11);
     }
 
-
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-
         http.authorizeHttpRequests((auth) -> auth
-
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/", "/login*",
-                                "/css/*", "/js/*", "/sign-up", "/sign-up-processing","/about" ,"/home","/storage/**").permitAll()
+                                "/css/*", "/js/*", "/sign-up", "/sign-up-processing","/about" ,
+                                "/home","/storage/**").permitAll()
                         .requestMatchers("/visualize").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
-
                 )
 
                 .formLogin(form -> form
@@ -65,18 +61,15 @@ public class SecurityConfiguration {
                         .loginProcessingUrl("/login") // should point to login page
                         .successForwardUrl("/visualize")
                         .permitAll()
-
                 )
 
-                .logout(
-                        logout -> logout
-                                .invalidateHttpSession(true)
-                                .clearAuthentication(true)
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .permitAll()
+                .logout(logout -> logout
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .permitAll()
                 );
 
         return http.build();    // ma lemme build!
-
     }
 }
