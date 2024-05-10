@@ -27,7 +27,6 @@ public class UserController {
         dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
 
-
     private UserServiceImpl userDetailsService;
     @Autowired
     private DataServiceImpl dataService;
@@ -39,21 +38,6 @@ public class UserController {
         this.userDetailsService = userDetailsService;
     }
 
-    /* Might bring this back
-    @GetMapping("/")
-    private String redirectToLogin(Authentication authentication) {
-
-        if (authentication == null || !authentication.isAuthenticated()) {
-            // User is not authenticated, redirect to login
-            return "redirect:/login";
-        }
-        else {
-            return "index";
-        }
-
-    }
-
-     */
     @GetMapping("/")
     private String redirectToLogin()
     {
@@ -86,16 +70,13 @@ public class UserController {
             model.addAttribute("dupUsernameMessage", e.getUsernameMessage());
             return "sign-up";
         }
-
     }
-
 
     @GetMapping("/login")
     public String getLoginPage() {
         log.info("Login page displayed");
         return "login";
     }
-
 
     @RequestMapping("/home")
     public String getHome() {
@@ -111,10 +92,10 @@ public class UserController {
         model.addAttribute("nameList", nameList);
         return "data";
     }
+    
     @GetMapping("/about")
     public String getAboutPage() {
         log.info("about page displayed");
         return "about";
     }
-
 }
