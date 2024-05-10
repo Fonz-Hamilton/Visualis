@@ -57,7 +57,6 @@ public class DataController {
         return "data";
     }
 
-
     @GetMapping("/fetchNames")
     @ResponseBody
     public List<String> getNames(Authentication authentication) {
@@ -69,11 +68,9 @@ public class DataController {
             fileNames.add((data.get(i).getDataInfo().getName()));
         }
 
-
         log.debug("File names: {}", fileNames);
 
         return fileNames;
-
     }
 
     @PostMapping("/load-data")
@@ -101,7 +98,7 @@ public class DataController {
 
             }
             catch (IOException e) {
-                model.addAttribute("errorMessage", "Error processing CSV file: " + e.getMessage());
+                model.addAttribute("errorMessage", "Error processing file");
                 return "data";
             }
 
@@ -116,9 +113,7 @@ public class DataController {
         catch (IncorrectResultSizeDataAccessException e) {
             return "redirect:/visualize";
         }
-
     }
-
 
     private Long getCurrentUserId(Authentication authentication) {
         try {
@@ -132,7 +127,4 @@ public class DataController {
         }
         return null; // im bad at exceptions
     }
-
-
 }
-

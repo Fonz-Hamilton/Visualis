@@ -73,7 +73,7 @@
                         <br>
                         <br>
                         <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
-                        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+                        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}" style="color: red;"></div>
                         <input type="text" name="description" placeholder="File Description">
                         <button type="submit">Upload File</button>
                     </form>
